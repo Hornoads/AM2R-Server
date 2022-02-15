@@ -2,6 +2,8 @@
 The Horde is made with [UndertaleModTool](), which is why this source is not a Game Maker Studio repo.  
 In order to use this: Use the aforementioned UndertaleModTool to open the data.win (`game.unx` / `game.ios`) from the Releases and its repacker scripts, along with [these](https://github.com/krzys-h/UndertaleModTool/pull/685/files) scripts for importing Rooms/Objects.
 
+Horde AM2R Server is only compatible with "The Horde"-mod. Using this with Miles' "Multitroid" _**will**_ result in crashes or corruption of save data!
+
 Original readme can be found below.
 
 # AM2R Server
