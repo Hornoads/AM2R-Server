@@ -1,5 +1,5 @@
 # Horde AM2R Server
-The Horde is made with [UndertaleModTool](), which is why this source is not a Game Maker Studio repo.
+The Horde is made with [UndertaleModTool](), which is why this source is not a Game Maker Studio repo.  
 In order to use this: Use the aforementioned UndertaleModTool to open the data.win (`game.unx` / `game.ios`) from the Releases and its repacker scripts, along with [these](https://github.com/krzys-h/UndertaleModTool/pull/685/files) scripts for importing Rooms/Objects.
 
 Original readme can be found below.
