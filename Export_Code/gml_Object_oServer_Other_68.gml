@@ -1,4 +1,4 @@
-var type_event, ip, findIP, findKickIP, ban, size, type, alignment, bufferSize, findsocket, i, arrList, socket, socketID, ID, arr, seed, _buffer, bufferSizePacket, clientID, sockets, preferredID, findID, clientX, clientY, clientSprite, clientImage, clientA1, clientA1X, clientA1Y, clientA2, clientA2X, clientA2Y, clientA2A, clientMirror, clientArmmsl, clientRoom, clientName, clientBlend, clientFXTimer, clientRoomPrev, clientState, clientMapX, clientMapY, playerHealth, missiles, smissiles, pbombs, ping, packetID, name, _queenHealth, phase, state, monstersLeft, monstersArea, item, itemArr, f, metdead, metdeadArr, event, eventArr, tileCount, tileX, tileY, tileData, itemstaken, maxmissiles, maxsmissiles, maxpbombs, maxhealth, etanks, mtanks, stanks, ptanks, gametime, findTime, findReset, playerhealth, syncDiff, syncELM, receivedItem, receivedEvent, receivedMetdead, j, receiveddmap;
+var type_event, ip, findIP, findKickIP, ban, size, type, alignment, bufferSize, findsocket, i, arrList, socket, socketID, ID, arr, seed, _buffer, bufferSizePacket, clientID, sockets, preferredID, findID, clientX, clientY, clientSprite, clientImage, clientA1, clientA1X, clientA1Y, clientA2, clientA2X, clientA2Y, clientA2A, clientMirror, clientArmmsl, clientRoom, clientName, clientBlend, clientFXTimer, clientRoomPrev, clientState, clientMapX, clientMapY, playerHealth, missiles, smissiles, pbombs, ping, packetID, name, _queenHealth, phase, state, monstersLeft, monstersArea, item, itemArr, f, metdead, metdeadArr, event, eventArr, tileCount, tileX, tileY, tileData, itemstaken, maxmissiles, maxsmissiles, maxpbombs, maxhealth, etanks, mtanks, stanks, ptanks, gametime, findTime, findReset, playerhealth, syncDiff, syncELM, receivedItem, receivedEvent, receivedMetdead, j, receiveddmap, dir, sprX, sprY, charge, sax, currentWeapon, missileX, missileY, velX, velY, icemissiles;
 type_event = ds_map_find_value(async_load, "type")
 ip = ds_map_find_value(async_load, "ip")
 findIP = ds_list_find_index(banList, ip)
@@ -1376,6 +1376,68 @@ switch type_event
                 }
                 else
                     ds_list_add(resetList, clientID)
+                break
+            case 21:
+                clientID = buffer_read(_buffer, buffer_u8)
+                dir = buffer_read(_buffer, buffer_s16)
+                sprX = buffer_read(_buffer, buffer_s16)
+                sprY = buffer_read(_buffer, buffer_s16)
+                charge = buffer_read(_buffer, buffer_u8)
+                sockets = ds_list_size(playerList)
+                buffer_delete(buffer)
+                size = 1024
+                type = buffer_grow
+                alignment = 1
+                buffer = buffer_create(size, type, alignment)
+                buffer_seek(buffer, buffer_seek_start, 0)
+                buffer_write(buffer, buffer_u8, 21)
+                buffer_write(buffer, buffer_u8, clientID)
+                buffer_write(buffer, buffer_s16, dir)
+                buffer_write(buffer, buffer_s16, sprX)
+                buffer_write(buffer, buffer_s16, sprY)
+                buffer_write(buffer, buffer_u8, charge)
+                bufferSize = buffer_tell(buffer)
+                buffer_seek(buffer, buffer_seek_start, 0)
+                buffer_write(buffer, buffer_s32, bufferSize)
+                buffer_write(buffer, buffer_u8, 21)
+                buffer_write(buffer, buffer_u8, clientID)
+                buffer_write(buffer, buffer_s16, dir)
+                buffer_write(buffer, buffer_s16, sprX)
+                buffer_write(buffer, buffer_s16, sprY)
+                buffer_write(buffer, buffer_u8, charge)
+                for (i = 0; i < sockets; i++)
+                    network_send_packet(ds_list_find_value(playerList, i), buffer, buffer_tell(buffer))
+                break
+            case 23:
+                clientID = buffer_read(_buffer, buffer_u8)
+                currentWeapon = buffer_read(_buffer, buffer_u8)
+                dir = buffer_read(_buffer, buffer_s16)
+                missileX = buffer_read(_buffer, buffer_s16)
+                missileY = buffer_read(_buffer, buffer_s16)
+                sockets = ds_list_size(playerList)
+                buffer_delete(buffer)
+                size = 1024
+                type = buffer_grow
+                alignment = 1
+                buffer = buffer_create(size, type, alignment)
+                buffer_seek(buffer, buffer_seek_start, 0)
+                buffer_write(buffer, buffer_u8, 23)
+                buffer_write(buffer, buffer_u8, clientID)
+                buffer_write(buffer, buffer_u8, currentWeapon)
+                buffer_write(buffer, buffer_s16, dir)
+                buffer_write(buffer, buffer_s16, missileX)
+                buffer_write(buffer, buffer_s16, missileY)
+                bufferSize = buffer_tell(buffer)
+                buffer_seek(buffer, buffer_seek_start, 0)
+                buffer_write(buffer, buffer_s32, bufferSize)
+                buffer_write(buffer, buffer_u8, 23)
+                buffer_write(buffer, buffer_u8, clientID)
+                buffer_write(buffer, buffer_u8, currentWeapon)
+                buffer_write(buffer, buffer_s16, dir)
+                buffer_write(buffer, buffer_s16, missileX)
+                buffer_write(buffer, buffer_s16, missileY)
+                for (i = 0; i < sockets; i++)
+                    network_send_packet(ds_list_find_value(playerList, i), buffer, buffer_tell(buffer))
                 break
             case 25:
                 playerhealth = buffer_read(_buffer, buffer_s16)
